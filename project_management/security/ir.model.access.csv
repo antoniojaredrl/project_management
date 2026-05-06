@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_plantas_obra,plantas_obra,model_plantas_obra,base.group_user,1,1,1,1
+access_disciplinas_obra,disciplinas_obra,model_disciplinas_obra,base.group_user,1,1,1,1

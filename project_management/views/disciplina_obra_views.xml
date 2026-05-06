@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="disciplina_obra_views_form" model="ir.ui.view">
+        <field name="name">disciplina.obra.form</field>
+        <field name="model">disciplina.obra</field>
+        <field name="arch" type="xml">
+            <form string="Disciplina Obra">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="nombre_disciplina" />
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>     
+    </record>
+
+    <record id="disciplina_obra_views_list" model="ir.ui.view">
+        <field name="name">Disciplina</field>
+        <field name="model">disciplina.obra</field>
+        <field name="arch" type="xml">
+            <list string="Disciplina" editable="bottom">
+                <field name="nombre_disciplina" />
+            </list>
+        </field>
+    </record>
+
+    <record id="disciplina_obra_action" model="ir.actions.act_window">
+        <field name="name">Disciplinas</field>
+        <field name="res_model">disciplina.obra</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer registro
+            </p>
+        </field>
+    </record>
+</odoo>
