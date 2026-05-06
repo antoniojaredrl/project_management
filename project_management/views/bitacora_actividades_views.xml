@@ -6,23 +6,58 @@
         <field name="arch" type="xml">
             <form string="Bitacora Actividades">
                 <sheet>
-                    <div>
+                    <div class="oe_title">
+                        <label for="name" />
                         <h1>
                             <field name="name" />
                         </h1>
                     </div>
-                    <group>
-                        <group>
-                            <field name="task_id" />
-                            <field name="sale_order_id" />
-                        </group>
 
+                    <group string="Información Relacional" >
+                        <field name="task_id" />
+                    </group>
+
+                    <group>
                         <group>
                             <field name="project_id" />
                             <field name="cliente" />
                         </group>
+
+                        <group>
+                            <field name="sale_order_id" />
+                            <field name="especialidad_venta" widget="many2many_tags"/>
+                        </group>
+                    </group>
+
+                    <group string="Datos Generales">
+                        <group>
+                            <field name="oc_pedido" />
+                            <field name="centro_trabajo" />
+                            <field name="especialidad_trabajo" />
+                        </group>
+
+                        <group>
+                            <field name="fecha_creacion" widget="datetime" />
+                            <field name="or_rfq" />
+                            <field name="no_cotizacion" />
+                        </group>
+                    </group>
+
+                    <group string="Descripción Detallada del Trabajo">
+                        <group>
+                            <field name="hora_inicio" />
+                            <field name="planta_trabajo" />
+                            <field name="supervisor_ayasa" widget="many2one_avatar" />
+                        </group>
+
+                        <group>
+                            <field name="hora_termino" />
+                            <field name="licencia_om" />
+                            <field name="supervisor_cliente" widget="many2one_avatar" />
+                        </group>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -32,7 +67,7 @@
         <field name="model">bitacora.actividades</field>
         <field name="arch" type="xml">
             <list string="Bitacora Actividades">
-                <field name="name"/>
+                <field name="name" />
             </list>
         </field>
     </record>

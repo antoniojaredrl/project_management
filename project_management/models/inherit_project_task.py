@@ -99,18 +99,20 @@ class InheritProjectTask(models.Model):
     cantidad_entregada = fields.Float(
         string="Cantidad Entregada",
         help="Cantidad entregada dentro de la actividad.",
+        store=True,
     )
 
     progreso_ava = fields.Float(
-        string="Progreso Ejecución",
-        help="Progreso entregado en base a lo solicitado."
+        string="Progreso Ejecucion",
+        help="Progreso entregado en base a lo solicitado.",
+        store=True,
     )
 
     tarea_terminada = fields.Boolean(
         string="Tarea Terminada",
+        store=True,
         default=False,
     )
-
 
     #Seccion: Metodos
 
@@ -119,3 +121,4 @@ class InheritProjectTask(models.Model):
     def _calcular_valor_total(self):
         for record in self:
             record.valor_total = record.cantidad_sol * record.valor_uni
+
