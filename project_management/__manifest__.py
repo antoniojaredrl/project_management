@@ -9,13 +9,15 @@
     'category': 'personalized',
     'version': '19.0.0.1',
 
-    'depends': ['base', 'mail', 'project'],
+    'depends': ['base', 'mail', 'project', 'sale', 'sale_project'],
 
     'data': [
         'security/ir.model.access.csv',
-        'views/inherit_project_task_views.xml',
+        'data/sequence.xml',
+        'views/bitacora_actividades_views.xml',
         'views/disciplina_obra_views.xml',
         'views/plantas_obra_views.xml',
+        'views/inherit_project_task_views.xml',
         'views/menu_actions.xml',
     ],
     'license': 'LGPL-3',

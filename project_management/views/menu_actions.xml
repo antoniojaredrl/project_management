@@ -4,10 +4,17 @@
     <menuitem id="menu_root" name="PMO" sequence="10"  web_icon="project_management,static/description/icon.png"/>
 
     <!-- Submenú que ejecuta la acción -->
+
+    <menuitem id="menu_bitacora_actividades"
+            name="Bitacora Actividades"
+            parent="menu_root"
+            action="bitacora_actividades_action"
+            sequence="1"/>
+
     <menuitem id="menu_complementos"
             name="Complementos"
             parent="menu_root"
-            sequence="1"/>
+            sequence="9"/>
 
     <menuitem id="menu_plantas_obra"
             name="Plantas"

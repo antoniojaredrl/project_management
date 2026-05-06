@@ -10,6 +10,9 @@
                         <group>
                             <field name="nombre_disciplina" />
                         </group>
+                        <group>
+                            <field name="cliente_rela" />
+                        </group>
                     </group>
                 </sheet>
                 <chatter/>
@@ -23,6 +26,7 @@
         <field name="arch" type="xml">
             <list string="Disciplina" editable="bottom">
                 <field name="nombre_disciplina" />
+                <field name="cliente_rela" />
             </list>
         </field>
     </record>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="bitacora_actividades_views_form" model="ir.ui.view">
+        <field name="name">bitacora.actividades.form</field>
+        <field name="model">bitacora.actividades</field>
+        <field name="arch" type="xml">
+            <form string="Bitacora Actividades">
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="task_id" />
+                            <field name="sale_order_id" />
+                        </group>
+
+                        <group>
+                            <field name="project_id" />
+                            <field name="cliente" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bitacora_actividades_views_list" model="ir.ui.view">
+        <field name="name">bitacora.actividades.list</field>
+        <field name="model">bitacora.actividades</field>
+        <field name="arch" type="xml">
+            <list string="Bitacora Actividades">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="bitacora_actividades_action" model="ir.actions.act_window">
+        <field name="name">Bitacora Actividades</field>
+        <field name="res_model">bitacora.actividades</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primer registro
+            </p>
+        </field>
+    </record>
+</odoo>

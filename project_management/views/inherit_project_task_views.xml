@@ -7,17 +7,42 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='role_ids']" position="after">
-                <field  name="es_tarea_obra" />
+                <field  name="es_tarea_obra" widget="boolean_toggle"/>
             </xpath>
 
             <xpath expr="//notebook" position="before">
                 <group string="Datos Generales" invisible="not es_tarea_obra">
                     <group>
-                        <field name="cliente" />
+                        <field name="fecha_creacion" />
+                        <field name="disciplina" widget="many2one" />
+                        <field name="area_trabajo" />
+                        <field name="supervisor_int" widget="many2one_avatar_employee" />
                     </group>
 
                     <group>
-                        <field name="planta" widget="many2one_tags" />
+                        <field name="cliente" />
+                        <field name="planta" widget="many2one" />
+                        <field name="licencia_om" />
+                        <field name="supervisor_ext" widget="many2one_avatar" />
+                    </group>
+                </group>
+                <group string="Ejecución Operativa" invisible="not es_tarea_obra">
+                    <group>
+                        <field name="producto"/>
+                        <field name="valor_uni" />
+                    </group>
+
+                    <group>
+                        <field name="cantidad_sol" />
+                        <field name="valor_total" />
+                    </group>
+                </group>
+                <group string="Avance" invisible="not es_tarea_obra">
+                    <group>
+                        <field name="cantidad_entregada" />
+                    </group>
+                    <group>
+                        <field name="progreso_ava" widget="progressbar"/>
                     </group>
                 </group>
             </xpath>
