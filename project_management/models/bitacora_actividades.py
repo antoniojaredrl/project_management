@@ -1,12 +1,23 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 class BitacoraActividades(models.Model):
+    """Linea operativa de avance capturada dentro de una bitacora."""
+
     _name='bitacora.actividades'
     _description='Bitacora de Actividades'
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _rec_name="name"
 
-    #! Seccion: Relaciones
+    # Relaciones principales. La bitacora agrupa; la tarea define proyecto,
+    # orden de venta, producto y datos base del trabajo.
+    bitacora_id = fields.Many2one(
+        'bitacora.bitacora',
+        string="Bitacora",
+        ondelete='cascade',
+        tracking=True,
+    )
+
     sale_order_id = fields.Many2one(
         'sale.order',
         string="Orden de Servicio",
@@ -119,7 +130,7 @@ class BitacoraActividades(models.Model):
         'res.partner',
         string="Supervisor (CLIENTE)",
         tracking=True,
-        domain="[('category_id', '=', 'Supervisor')]",
+        domain="[('category_id.name', '=', 'Supervisor')]",
         related="task_id.supervisor_ext",
     )
 
@@ -130,24 +141,95 @@ class BitacoraActividades(models.Model):
         related="task_id.supervisor_int",
     )
 
-    #! Seccion: Metodos
+    sale_order_line_id = fields.Many2one(
+        'sale.order.line',
+        string="Linea de Venta",
+        related="task_id.sale_line_id",
+    )
 
-    # El metodo create() se ejecuta automaticamente al guardar un nuevo registro.
-    # Odoo puede recibir un diccionario (1 registro) o una lista de diccionarios (varios).
-    # Si el campo 'name' esta vacio, se genera el secuencial solo al momento de guardar.
-    # Esto evita consumir numeros de secuencia cuando se cancela la creacion del registro.
+    producto = fields.Many2one(
+        'product.template',
+        string="Producto",
+        related="task_id.producto",
+    )
+
+    valor_unitario = fields.Float(
+        string="Valor Unitario",
+        related="task_id.valor_uni",
+    )
+
+    cantidad_total = fields.Float(
+        string="Unidades a Entregar",
+        compute="_compute_cantidades_avance",
+        digits="Product Unit",
+    )
+
+    cantidad_anterior = fields.Float(
+        string="Entregado Anterior",
+        compute="_compute_cantidades_avance",
+        digits="Product Unit",
+    )
+
+    cantidad_avance = fields.Float(
+        string="Avance a Entregar",
+        tracking=True,
+        digits="Product Unit",
+    )
+
+    cantidad_acumulada = fields.Float(
+        string="Entregado Acumulado",
+        compute="_compute_cantidades_avance",
+        digits="Product Unit",
+    )
+
+    porcentaje_avance = fields.Float(
+        string="Avance Actual",
+        compute="_compute_cantidades_avance",
+        help="Valor en formato ratio para el widget percentage: 0.25 se muestra como 25%.",
+    )
+
+    importe_avance = fields.Float(
+        string="Importe del Avance",
+        compute="_compute_cantidades_avance",
+    )
+
+    @api.depends('task_id', 'task_id.cantidad_sol', 'cantidad_avance', 'bitacora_id.state')
+    def _compute_cantidades_avance(self):
+        """Calcula avance del corte y acumulados confirmados de la tarea.
+
+        El avance anterior solo considera lineas de bitacoras confirmadas;
+        una linea en borrador muestra una proyeccion sin afectar aun la tarea.
+        """
+        for record in self:
+            cantidad_anterior = 0.0
+            if record.task_id:
+                domain = [
+                    ('task_id', '=', record.task_id.id),
+                    ('bitacora_id.state', '=', 'confirmed'),
+                ]
+                if record.id:
+                    domain.append(('id', '!=', record.id))
+                cantidad_anterior = sum(self.search(domain).mapped('cantidad_avance'))
+
+            cantidad_total = float(record.task_id.cantidad_sol or 0.0)
+            cantidad_acumulada = cantidad_anterior + (record.cantidad_avance or 0.0)
+
+            record.cantidad_total = cantidad_total
+            record.cantidad_anterior = cantidad_anterior
+            record.cantidad_acumulada = cantidad_acumulada
+            record.porcentaje_avance = (record.cantidad_avance / cantidad_total) if cantidad_total else 0.0
+            record.importe_avance = (record.cantidad_avance or 0.0) * (record.valor_unitario or 0.0)
+
+    @api.constrains('cantidad_avance')
+    def _check_cantidad_avance(self):
+        for record in self:
+            if record.cantidad_avance < 0:
+                raise ValidationError(_("Las unidades del avance no pueden ser negativas."))
+
+    @api.model_create_multi
     def create(self, vals_list):
-        # Verificar si es una lista (multiples registros) o un diccionario (un solo registro)
-        if isinstance(vals_list, list):
-            # Iterar sobre cada registro en la lista
-            for vals in vals_list:
-                if not vals.get('name'):
-                    # Obtener el siguiente numero de secuencia (ej: BAC-0001)
-                    #Solo se consume aqui, al guardar en la base de datos
-                    vals['name'] = self.env['ir.sequence'].next_by_code('secuencia.bitacora') or '/'
-        else:
-            # Un solo registro
-            if not vals_list.get('name'):
-                vals_list['name'] = self.env['ir.sequence'].next_by_code('secuencia.bitacora') or '/'
-        # Llamar al metodo original de la clase padre para crear el registro
+        """Asigna el folio de avance solo al guardar la linea."""
+        for vals in vals_list:
+            if vals.get('name', 'Nuevo') in ('Nuevo', '/'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('secuencia.bitacora.actividades') or '/'
         return super().create(vals_list)

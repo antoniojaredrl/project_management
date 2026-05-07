@@ -5,11 +5,17 @@
 
     <!-- Submenú que ejecuta la acción -->
 
-    <menuitem id="menu_bitacora_actividades"
-            name="Bitacora Actividades"
+    <menuitem id="menu_bitacoras"
+            name="Bitacoras"
+            parent="menu_root"
+            action="bitacora_bitacora_action"
+            sequence="1"/>
+
+    <menuitem id="menu_avances_bitacora"
+            name="Avances"
             parent="menu_root"
             action="bitacora_actividades_action"
-            sequence="1"/>
+            sequence="2"/>
 
     <menuitem id="menu_complementos"
             name="Complementos"

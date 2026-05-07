@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="seq_bitacora_actividades" model="ir.sequence">
+    <record id="seq_bitacora_bitacora" model="ir.sequence">
         <field name="name">Secuencia Bitacora</field>
-        <field name="code">secuencia.bitacora</field>
+        <field name="code">secuencia.bitacora.bitacora</field>
         <field name="prefix">BIT</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_bitacora_actividades" model="ir.sequence">
+        <field name="name">Secuencia Actividades Bitacora</field>
+        <field name="code">secuencia.bitacora.actividades</field>
+        <field name="prefix">AV</field>
         <field name="padding">5</field>
         <field name="number_increment">1</field>
     </record>

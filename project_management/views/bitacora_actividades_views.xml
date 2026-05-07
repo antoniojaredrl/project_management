@@ -4,56 +4,77 @@
         <field name="name">bitacora.actividades.form</field>
         <field name="model">bitacora.actividades</field>
         <field name="arch" type="xml">
-            <form string="Bitacora Actividades">
+            <form string="Linea de Avance">
                 <sheet>
                     <div class="oe_title">
-                        <label for="name" />
+                        <label for="name"/>
                         <h1>
-                            <field name="name" />
+                            <field name="name"/>
                         </h1>
                     </div>
 
-                    <group string="Información Relacional" >
-                        <field name="task_id" />
+                    <group string="Informacion Relacional">
+                        <field name="bitacora_id" required="1"/>
+                        <field name="task_id"/>
                     </group>
 
                     <group>
                         <group>
-                            <field name="project_id" />
-                            <field name="cliente" />
+                            <field name="project_id"/>
+                            <field name="cliente"/>
                         </group>
-
                         <group>
-                            <field name="sale_order_id" />
+                            <field name="sale_order_id"/>
+                            <field name="sale_order_line_id"/>
                             <field name="especialidad_venta" widget="many2many_tags"/>
+                        </group>
+                    </group>
+
+                    <group string="Avance">
+                        <group>
+                            <field name="producto"/>
+                            <field name="valor_unitario"/>
+                        </group>
+                        <group>
+                            <field name="cantidad_avance"/>
+                            <field name="cantidad_total"/>
+                        </group>
+                    </group>
+
+                    <group string="Acumulado">
+                        <group>
+                            <field name="cantidad_anterior"/>
+                            <field name="cantidad_acumulada"/>
+                        </group>
+                        <group>
+                            <field name="porcentaje_avance" widget="percentage"/>
+                            <field name="importe_avance"/>
                         </group>
                     </group>
 
                     <group string="Datos Generales">
                         <group>
-                            <field name="oc_pedido" />
-                            <field name="centro_trabajo" />
-                            <field name="especialidad_trabajo" />
+                            <field name="oc_pedido"/>
+                            <field name="centro_trabajo"/>
+                            <field name="especialidad_trabajo"/>
                         </group>
-
                         <group>
-                            <field name="fecha_creacion" widget="datetime" />
-                            <field name="or_rfq" />
-                            <field name="no_cotizacion" />
+                            <field name="fecha_creacion" widget="datetime"/>
+                            <field name="or_rfq"/>
+                            <field name="no_cotizacion"/>
                         </group>
                     </group>
 
-                    <group string="Descripción Detallada del Trabajo">
+                    <group string="Descripcion Detallada del Trabajo">
                         <group>
-                            <field name="hora_inicio" />
-                            <field name="planta_trabajo" />
-                            <field name="supervisor_ayasa" widget="many2one_avatar" />
+                            <field name="hora_inicio"/>
+                            <field name="planta_trabajo"/>
+                            <field name="supervisor_ayasa" widget="many2one_avatar"/>
                         </group>
-
                         <group>
-                            <field name="hora_termino" />
-                            <field name="licencia_om" />
-                            <field name="supervisor_cliente" widget="many2one_avatar" />
+                            <field name="hora_termino"/>
+                            <field name="licencia_om"/>
+                            <field name="supervisor_cliente" widget="many2one_avatar"/>
                         </group>
                     </group>
                 </sheet>
@@ -66,20 +87,30 @@
         <field name="name">bitacora.actividades.list</field>
         <field name="model">bitacora.actividades</field>
         <field name="arch" type="xml">
-            <list string="Bitacora Actividades">
-                <field name="name" />
+            <list string="Lineas de Avance">
+                <field name="name"/>
+                <field name="bitacora_id"/>
+                <field name="task_id"/>
+                <field name="producto"/>
+                <field name="project_id"/>
+                <field name="sale_order_id"/>
+                <field name="cantidad_avance"/>
+                <field name="cantidad_acumulada"/>
+                <field name="porcentaje_avance" widget="percentage"/>
+                <field name="importe_avance"/>
+                <field name="centro_trabajo"/>
             </list>
         </field>
     </record>
 
     <record id="bitacora_actividades_action" model="ir.actions.act_window">
-        <field name="name">Bitacora Actividades</field>
+        <field name="name">Lineas de Avance</field>
         <field name="res_model">bitacora.actividades</field>
         <field name="view_mode">list,form</field>
         <field name="target">current</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Crea tu primer registro
+                Las lineas se capturan desde una bitacora
             </p>
         </field>
     </record>

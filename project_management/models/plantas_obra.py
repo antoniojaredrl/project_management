@@ -24,7 +24,7 @@ class PlantasObra(models.Model):
         'res.partner',
         string="Cliente Rel.",
         help="Cliente relacionado a la planta.",
-        domain="[('category_id', '=', 'Cliente')]",
+        domain="[('category_id.name', '=', 'Cliente')]",
         tracking=True,
     )
 

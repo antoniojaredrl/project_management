@@ -40,11 +40,31 @@
                 <group string="Avance" invisible="not es_tarea_obra">
                     <group>
                         <field name="cantidad_entregada" />
+                        <field name="cantidad_pendiente" />
                     </group>
                     <group>
                         <field name="progreso_ava" widget="progressbar"/>
+                        <field name="tarea_terminada" widget="boolean_toggle"/>
                     </group>
                 </group>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Bitacora" invisible="not es_tarea_obra">
+                    <field name="bitacora_actividad_ids" readonly="1">
+                        <list string="Avances de Bitacora">
+                            <field name="bitacora_id"/>
+                            <field name="name"/>
+                            <field name="cantidad_avance"/>
+                            <field name="cantidad_acumulada"/>
+                            <field name="porcentaje_avance" widget="percentage"/>
+                            <field name="importe_avance"/>
+                            <field name="hora_inicio"/>
+                            <field name="hora_termino"/>
+                            <field name="licencia_om"/>
+                        </list>
+                    </field>
+                </page>
             </xpath>
 
         </field>

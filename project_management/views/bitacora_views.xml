@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="bitacora_bitacora_views_form" model="ir.ui.view">
+        <field name="name">bitacora.bitacora.form</field>
+        <field name="model">bitacora.bitacora</field>
+        <field name="arch" type="xml">
+            <form string="Bitacora">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirmar" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_draft" type="object" string="Regresar a Borrador" invisible="state == 'draft'"/>
+                    <button name="action_cancel" type="object" string="Cancelar" invisible="state == 'cancel'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_view_actividades" icon="fa-list">
+                            <field name="line_count" widget="statinfo" string="Avances"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="fecha"/>
+                            <field name="responsable_id" widget="many2one_avatar_user"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="observacion" placeholder="Observaciones generales de la bitacora"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Avances">
+                            <field name="actividad_ids" context="{'default_bitacora_id': id}" readonly="state != 'draft'">
+                                <list string="Lineas de Avance" editable="bottom">
+                                    <field name="name" readonly="1"/>
+                                    <field name="task_id"/>
+                                    <field name="producto" readonly="1"/>
+                                    <field name="project_id" readonly="1"/>
+                                    <field name="sale_order_id" readonly="1"/>
+                                    <field name="cantidad_anterior" readonly="1"/>
+                                    <field name="cantidad_avance"/>
+                                    <field name="cantidad_total" readonly="1"/>
+                                    <field name="cantidad_acumulada" readonly="1"/>
+                                    <field name="porcentaje_avance" widget="percentage" readonly="1"/>
+                                    <field name="importe_avance" readonly="1"/>
+                                    <field name="centro_trabajo"/>
+                                    <field name="hora_inicio"/>
+                                    <field name="hora_termino"/>
+                                    <field name="licencia_om"/>
+                                </list>
+                                <form string="Linea de Avance">
+                                    <sheet>
+                                        <field name="bitacora_id" invisible="1"/>
+                                        <div class="oe_title">
+                                            <label for="name"/>
+                                            <h1>
+                                                <field name="name"/>
+                                            </h1>
+                                        </div>
+
+                                        <group string="Informacion Relacional">
+                                            <field name="task_id"/>
+                                        </group>
+
+                                        <group>
+                                            <group>
+                                                <field name="project_id"/>
+                                                <field name="cliente"/>
+                                            </group>
+                                            <group>
+                                                <field name="sale_order_id"/>
+                                                <field name="sale_order_line_id"/>
+                                                <field name="especialidad_venta" widget="many2many_tags"/>
+                                            </group>
+                                        </group>
+
+                                        <group string="Avance">
+                                            <group>
+                                                <field name="producto"/>
+                                                <field name="valor_unitario"/>
+                                            </group>
+                                            <group>
+                                                <field name="cantidad_avance"/>
+                                                <field name="cantidad_total"/>
+                                            </group>
+                                        </group>
+
+                                        <group string="Acumulado">
+                                            <group>
+                                                <field name="cantidad_anterior"/>
+                                                <field name="cantidad_acumulada"/>
+                                            </group>
+                                            <group>
+                                                <field name="porcentaje_avance" widget="percentage"/>
+                                                <field name="importe_avance"/>
+                                            </group>
+                                        </group>
+
+                                        <group string="Datos Generales">
+                                            <group>
+                                                <field name="oc_pedido"/>
+                                                <field name="centro_trabajo"/>
+                                                <field name="especialidad_trabajo"/>
+                                            </group>
+                                            <group>
+                                                <field name="fecha_creacion" widget="datetime"/>
+                                                <field name="or_rfq"/>
+                                                <field name="no_cotizacion"/>
+                                            </group>
+                                        </group>
+
+                                        <group string="Descripcion Detallada del Trabajo">
+                                            <group>
+                                                <field name="hora_inicio"/>
+                                                <field name="planta_trabajo"/>
+                                                <field name="supervisor_ayasa" widget="many2one_avatar"/>
+                                            </group>
+                                            <group>
+                                                <field name="hora_termino"/>
+                                                <field name="licencia_om"/>
+                                                <field name="supervisor_cliente" widget="many2one_avatar"/>
+                                            </group>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="bitacora_bitacora_views_list" model="ir.ui.view">
+        <field name="name">bitacora.bitacora.list</field>
+        <field name="model">bitacora.bitacora</field>
+        <field name="arch" type="xml">
+            <list string="Bitacoras">
+                <field name="name"/>
+                <field name="fecha"/>
+                <field name="responsable_id" widget="many2one_avatar_user"/>
+                <field name="line_count"/>
+                <field name="state" widget="badge" decoration-muted="state == 'draft'" decoration-success="state == 'confirmed'" decoration-danger="state == 'cancel'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="bitacora_bitacora_action" model="ir.actions.act_window">
+        <field name="name">Bitacoras</field>
+        <field name="res_model">bitacora.bitacora</field>
+        <field name="view_mode">list,form</field>
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea tu primera bitacora
+            </p>
+        </field>
+    </record>
+
+</odoo>
